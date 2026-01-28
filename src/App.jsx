@@ -14,9 +14,18 @@ function App() {
     const observerRef = useRef(null);
     const sentinelRef = useRef(null);
 
+    async function loadMoreArticles() {
+        const newFeedArticles = await apiGetFeed(page+1);
+
+        setFeed(prev => [...prev, ...newFeedArticles]);
+        setPage(prev => prev + 1);
+        setHasMore(newFeedArticles.length > 0);
+        setLoading(false);
+    }
+
     useEffect(() => {
         async function fetchFeed() {
-            let feed = await apiGetFeed();
+            let feed = await apiGetFeed(0);
 
             console.log(feed);
 
@@ -34,14 +43,7 @@ function App() {
                 if (!entry.isIntersecting || loading || !hasMore) return;
 
                 setLoading(true);
-
-                // Fake API call
-                const newFeedArticles = await apiGetFeed(page);
-
-                setFeed(prev => [...prev, ...newFeedArticles]);
-                setPage(prev => prev + 1);
-                setHasMore(newFeedArticles.length > 0);
-                setLoading(false);
+                await loadMoreArticles();
             },
             {
                 root: document.querySelector("#scroll-container"),
@@ -68,6 +70,7 @@ function App() {
             <div ref={sentinelRef} />
 
             {loading && <p style={{ padding: 16 }}>Chargement…</p>}
+            {!loading && <p style={{ padding: 16 }} onClick={() => loadMoreArticles()}>Plus d'articles</p>}
             {!hasMore && <p style={{ padding: 16 }}>Fin 🎉</p>}
         </div>
     )
