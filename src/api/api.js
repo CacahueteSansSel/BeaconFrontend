@@ -17,6 +17,6 @@ async function request(path, options = {}) {
     return response.json();
 }
 
-export async function apiGetFeed() {
-    return request("/beacon/feed", { method: "GET" });
+export async function apiGetFeed(page) {
+    return request("/beacon/feed?page=" + page, { method: "GET" });
 }

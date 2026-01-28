@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -7,6 +7,12 @@ import {Article} from "./components/Article.jsx";
 
 function App() {
     const [feed, setFeed] = useState([]);
+    const [page, setPage] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+
+    const observerRef = useRef(null);
+    const sentinelRef = useRef(null);
 
     useEffect(() => {
         async function fetchFeed() {
@@ -20,6 +26,35 @@ function App() {
         fetchFeed();
     }, [])
 
+    useEffect(() => {
+        if (!sentinelRef.current) return;
+
+        observerRef.current = new IntersectionObserver(
+            async ([entry]) => {
+                if (!entry.isIntersecting || loading || !hasMore) return;
+
+                setLoading(true);
+
+                // Fake API call
+                const newFeedArticles = await apiGetFeed(page);
+
+                setFeed(prev => [...prev, ...newFeedArticles]);
+                setPage(prev => prev + 1);
+                setHasMore(newFeedArticles.length > 0);
+                setLoading(false);
+            },
+            {
+                root: document.querySelector("#scroll-container"),
+                rootMargin: "100px",
+                threshold: 0.1,
+            }
+        );
+
+        observerRef.current.observe(sentinelRef.current);
+
+        return () => observerRef.current?.disconnect();
+    }, [page, loading, hasMore]);
+
     return (
         <div className={"mx-4 my-2 mb-20 mt-10"}>
             <p className={"text-2xl font-bold text-center"}>Beacon</p>
@@ -29,6 +64,11 @@ function App() {
                     return <Article key={i} article={item} />
                 })}
             </div>
+
+            <div ref={sentinelRef} />
+
+            {loading && <p style={{ padding: 16 }}>Chargement…</p>}
+            {!hasMore && <p style={{ padding: 16 }}>Fin 🎉</p>}
         </div>
     )
 }
