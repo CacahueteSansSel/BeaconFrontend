@@ -28,6 +28,7 @@ export function Article({article}) {
             {article.coverImageUrl && <img className={"h-50 w-full object-cover border-2"} style={{borderColor: "#" + article.outlet.color}} src={article.coverImageUrl}/>}
             {!article.coverImageUrl && <img className={"h-50 w-full object-cover"} src={DefaultCover}/>}
             <p className={"text-xl font-bold"}>{article.title}</p>
+            <p className={"opacity-50"} style={{color: "#" + article.outlet.color}}>{article.id}</p>
         </div>
     )
 }

@@ -17,6 +17,10 @@ async function request(path, options = {}) {
     return response.json();
 }
 
+export async function apiGetInfos() {
+    return request("/beacon/infos", { method: "GET" });
+}
+
 export async function apiGetFeed(page) {
     return request("/beacon/feed?page=" + page, { method: "GET" });
 }
