@@ -25,8 +25,10 @@ export function Article({article}) {
                 return;
         }
 
-        if (article.outlet.temperature < -0.8 || article.outlet.temperature > 0.8)
-            setWarning("Média d'opinion")
+        if (article.outlet.temperature < -0.8)
+            setWarning("Média d'opinion (Extr.Gauche)")
+        if (article.outlet.temperature > 0.8)
+            setWarning("Média d'opinion (Extr.Droite)")
     }, [article])
 
     function getArticleCategoryTitle(category) {
