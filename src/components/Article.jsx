@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 
 export function Article({article}) {
     const [warning, setWarning] = useState(undefined)
+    const [political, setPolitical] = useState(undefined)
 
     let date = new Date(article.publishDate)
 
@@ -19,16 +20,32 @@ export function Article({article}) {
                 break;
             case "paywall":
                 setWarning("Payant")
-                return;
+                break;
             case "cookiesorpaywall":
                 setWarning("Cookies imposés")
-                return;
+                break;
         }
 
         if (article.outlet.temperature < -0.8)
-            setWarning("Média d'opinion (Extr.Gauche)")
+        {
+            setPolitical("Extr. Gauche")
+            return
+        }
         if (article.outlet.temperature > 0.8)
-            setWarning("Média d'opinion (Extr.Droite)")
+        {
+            setPolitical("Extr. Droite")
+            return;
+        }
+        if (article.outlet.temperature < -0.35)
+        {
+            setPolitical("Gauche")
+            return;
+        }
+        if (article.outlet.temperature > 0.35)
+        {
+            setPolitical("Droite")
+            return;
+        }
     }, [article])
 
     function getArticleCategoryTitle(category) {
@@ -46,6 +63,9 @@ export function Article({article}) {
         <div style={{borderColor: "#" + article.outlet.color}} className={"relative border-2 p-4 rounded-lg shadow-2xl flex flex-col gap-1"} onClick={() => window.open(article.url)}>
             <div className="absolute -translate-y-6 flex flex-row gap-2">
                 <div style={{borderColor: "#" + article.outlet.color}} className={"rounded px-2 font-bold border-2 bg-white"} style={{color: "#" + article.outlet.color}}>{article.outlet.title}</div>
+                {political && (
+                    <div style={{borderColor: "#" + article.outlet.color}} className={"rounded px-2 font-bold border-2 bg-white"} style={{color: "#" + article.outlet.color}}>🌡️ {political}</div>
+                )}
                 {warning && (
                     <div className={"rounded px-2 font-bold border-2 border-amber-700 bg-amber-700 text-white"}>▲ {warning}</div>
                 )}
