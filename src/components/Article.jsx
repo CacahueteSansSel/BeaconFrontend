@@ -11,12 +11,18 @@ export function Article({article}) {
     let isToday = date.toDateString() === new Date().toDateString()
 
     useEffect(() => {
-        if (!article) return;
+        if (!article || !article.outlet) {
+            setWarning(undefined)
+            setPolitical(undefined)
+
+            return;
+        }
 
         console.log(article.outlet.restrictions)
 
         switch (article.outlet.restrictions) {
             case "none":
+                setWarning(undefined)
                 break;
             case "paywall":
                 setWarning("Payant")
@@ -46,6 +52,8 @@ export function Article({article}) {
             setPolitical("Droite")
             return;
         }
+
+        setPolitical(undefined)
     }, [article])
 
     function getArticleCategoryTitle(category) {
