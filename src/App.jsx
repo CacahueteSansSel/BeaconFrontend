@@ -58,13 +58,13 @@ function App() {
     }, [page, loading, hasMore]);
 
     return (
-        <div className={"mx-4 my-2 mb-20 mt-4"}>
+        <div className={"px-4 py-2 pb-20 pt-4 dark:bg-black dark:text-gray-300"}>
             <div className={"flex flex-row justify-between items-center"}>
                 <img src={BeaconIcon} alt={"Beacon Logo"} className={"h-20"}/>
                 {infos && (
                     <div className={"flex flex-col mr-7 items-end"}>
-                        <p className={"opacity-50"}>Dernière récup à {new Date(infos.lastGatherTime).getHours().toString()}h{new Date(infos.lastGatherTime).getMinutes().toString().padStart(2, '0')}</p>
-                        <p className={"text-xl font-bold"}>Actualités - v{infos.version}</p>
+                        <p className={"opacity-50 tinos-regular"}>Dernière récup à {new Date(infos.lastGatherTime).getHours().toString()}h{new Date(infos.lastGatherTime).getMinutes().toString().padStart(2, '0')}</p>
+                        <p className={"text-xl font-bold dm-serif-text-regular"}>Actualités - v{infos.version}</p>
                     </div>
                 )}
             </div>

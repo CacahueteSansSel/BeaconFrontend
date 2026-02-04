@@ -7,7 +7,9 @@ export function Article({article}) {
 
     let date = new Date(article.publishDate)
 
-    let fgColor = article.outlet.color === "000000" ? "FFFFFF" : "000000"
+    let isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    let bgColor = article.outlet.color === "000000" && isDarkMode ? "d1d5dc" : article.outlet.color
+    let fgColor = bgColor === "000000" ? "FFFFFF" : "000000"
     let isToday = date.toDateString() === new Date().toDateString()
 
     useEffect(() => {
@@ -32,26 +34,26 @@ export function Article({article}) {
                 break;
         }
 
-        if (article.outlet.temperature < -0.8)
-        {
-            setPolitical("Extr. Gauche")
-            return
-        }
-        if (article.outlet.temperature > 0.8)
-        {
-            setPolitical("Extr. Droite")
-            return;
-        }
-        if (article.outlet.temperature < -0.35)
-        {
-            setPolitical("Gauche")
-            return;
-        }
-        if (article.outlet.temperature > 0.35)
-        {
-            setPolitical("Droite")
-            return;
-        }
+        // if (article.outlet.temperature < -0.8)
+        // {
+        //     setPolitical("Extr. Gauche")
+        //     return
+        // }
+        // if (article.outlet.temperature > 0.8)
+        // {
+        //     setPolitical("Extr. Droite")
+        //     return;
+        // }
+        // if (article.outlet.temperature < -0.35)
+        // {
+        //     setPolitical("Gauche")
+        //     return;
+        // }
+        // if (article.outlet.temperature > 0.35)
+        // {
+        //     setPolitical("Droite")
+        //     return;
+        // }
 
         setPolitical(undefined)
     }, [article])
@@ -68,25 +70,25 @@ export function Article({article}) {
     }
 
     return (
-        <div style={{borderColor: "#" + article.outlet.color}} className={"relative border-2 p-4 rounded-lg shadow-2xl flex flex-col gap-1"} onClick={() => window.open(article.url)}>
-            <div className="absolute -translate-y-6 flex flex-row gap-2">
-                <div style={{borderColor: "#" + article.outlet.color}} className={"rounded px-2 font-bold border-2 bg-white"} style={{color: "#" + article.outlet.color}}>{article.outlet.title}</div>
+        <div style={{borderColor: "#" + bgColor}} className={"dm-serif-text-regular relative dark:text-gray-300 border-2 p-4 rounded-lg shadow-2xl flex flex-col gap-1"} onClick={() => window.open(article.url)}>
+            <div className="absolute -translate-y-6 flex flex-row gap-2 tinos-regular">
+                <div style={{borderColor: "#" + bgColor}} className={"rounded px-2 font-bold border-2 bg-white dark:bg-black"} style={{color: "#" + bgColor}}>{article.outlet.title}</div>
                 {political && (
-                    <div style={{borderColor: "#" + article.outlet.color}} className={"rounded px-2 font-bold border-2 bg-white"} style={{color: "#" + article.outlet.color}}>🌡️ {political}</div>
+                    <div style={{borderColor: "#" + bgColor}} className={"rounded px-2 font-bold border-2 bg-white dark:bg-black"} style={{color: "#" + bgColor}}>🌡️ {political}</div>
                 )}
                 {warning && (
-                    <div className={"rounded px-2 font-bold border-2 border-amber-700 bg-amber-700 text-white"}>▲ {warning}</div>
+                    <div className={"rounded px-2 font-bold border-2 border-amber-700 bg-amber-700 dark:border-amber-900 dark:bg-amber-900 text-white dark:text-gray-300"}>▲ {warning}</div>
                 )}
             </div>
-            <div className={"flex flex-row justify-between items-center mt-1"}>
+            <div className={"flex flex-row justify-between items-center mt-1 tinos-regular"}>
                 {!isToday && <p className={"opacity-50"}>le {date.toLocaleDateString()}, à {date.getHours()}h{date.getMinutes().toString().padStart(2, '0')}</p>}
                 {isToday && <p className={"opacity-50"}>aujourd'hui, à {date.getHours()}h{date.getMinutes().toString().padStart(2, '0')}</p>}
-                <p className={"opacity-50 font-semibold"}>{getArticleCategoryTitle(article.outlet.category)}</p>
+                <p className={"opacity-50 font-semibold dm-serif-text-regular"}>{getArticleCategoryTitle(article.outlet.category)}</p>
             </div>
-            {article.coverImageUrl && <img className={"h-50 w-full object-cover border-2"} style={{borderColor: "#" + article.outlet.color}} src={article.coverImageUrl}/>}
+            {article.coverImageUrl && <img className={"h-50 w-full object-cover border-2 dark:opacity-60"} style={{borderColor: "#" + bgColor}} src={article.coverImageUrl}/>}
             {!article.coverImageUrl && <img className={"h-50 w-full object-cover"} src={DefaultCover}/>}
             <p className={"text-xl font-bold"}>{article.title}</p>
-            <p className={"opacity-50"} style={{color: "#" + article.outlet.color}}>{article.id}</p>
+            <p className={"opacity-50 tinos-regular"} style={{color: "#" + bgColor}}>{article.id}</p>
         </div>
     )
 }
