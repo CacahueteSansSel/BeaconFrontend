@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 .dm-serif-text-regular {
     font-family: "DM Serif Text", serif;
     font-weight: 400;
@@ -14,4 +16,9 @@
     font-family: "Tinos", serif;
     font-weight: 400;
     font-style: normal;
+}
+
+html,
+body {
+    @apply bg-white dark:bg-black;
 }

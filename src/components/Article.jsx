@@ -88,7 +88,7 @@ export function Article({article}) {
             {article.coverImageUrl && <img className={"h-50 w-full object-cover border-2 dark:opacity-60"} style={{borderColor: "#" + bgColor}} src={article.coverImageUrl}/>}
             {!article.coverImageUrl && <img className={"h-50 w-full object-cover"} src={DefaultCover}/>}
             <p className={"text-xl font-bold"}>{article.title}</p>
-            <p className={"opacity-50 tinos-regular"} style={{color: "#" + bgColor}}>{article.id}</p>
+            <p className={"opacity-50 font-sans"} style={{color: "#" + bgColor}}>{article.id}</p>
         </div>
     )
 }
