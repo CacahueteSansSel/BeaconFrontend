@@ -24,3 +24,7 @@ export async function apiGetInfos() {
 export async function apiGetFeed(page) {
     return request("/beacon/feed?page=" + page, { method: "GET" });
 }
+
+export async function apiGetBakedArticle(id) {
+    return request("/beacon/baked/" + id, { method: "GET" });
+}
