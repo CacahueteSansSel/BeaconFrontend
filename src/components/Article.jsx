@@ -73,17 +73,14 @@ export function Article({article}) {
 
     return (
         <div style={{borderColor: "#" + bgColor, boxShadow: '0 25px 50px -12px #' + bgColor + "44"}} className={"dm-serif-text-regular relative dark:text-gray-300 border-2 p-4 rounded-lg flex flex-col gap-1"}
-             onClick={() => article.isBaked ? navigate('/article/' + article.id) : window.open(article.url)}>
+             onClick={() => article.isBaked ? window.open('/article/' + article.id) : window.open(article.url)}>
             <div className="absolute -translate-y-6 flex flex-row gap-2 tinos-regular">
-                <div style={{borderColor: "#" + bgColor}} className={"rounded px-2 font-bold border-2 bg-white dark:bg-black"} style={{color: "#" + bgColor}}>{article.outlet.title}</div>
+                <div style={{borderColor: "#" + bgColor}} className={"rounded px-2 font-bold border-2 bg-white dark:bg-black flex flex-row gap-1 items-center"} style={{color: "#" + bgColor}}>
+                    <img src={article.outlet.faviconUrl} className={"w-5 h-5"}/>
+                    <span>{article.outlet.title}</span>
+                </div>
                 {political && (
                     <div style={{borderColor: "#" + bgColor}} className={"rounded px-2 font-bold border-2 bg-white dark:bg-black"} style={{color: "#" + bgColor}}>🌡️ {political}</div>
-                )}
-                {warning && (
-                    <div className={"rounded px-2 font-bold border-2 border-amber-700 bg-amber-700 dark:border-amber-900 dark:bg-amber-900 text-white dark:text-gray-300"}>▲ {warning}</div>
-                )}
-                {article.isBaked && (
-                    <div className={"rounded px-0.5 font-bold border-2 bg-white dark:bg-black"} style={{color: "#" + bgColor}}>💾</div>
                 )}
             </div>
             <div className={"flex flex-row justify-between items-center mt-1 tinos-regular"}>
@@ -91,10 +88,16 @@ export function Article({article}) {
                 {isToday && <p className={"opacity-50"}>aujourd'hui, à {date.getHours()}h{date.getMinutes().toString().padStart(2, '0')}</p>}
                 <p className={"opacity-50 font-semibold dm-serif-text-regular"}>{getArticleCategoryTitle(article.outlet.category)}</p>
             </div>
-            {article.coverImageUrl && <img className={"h-50 w-full object-cover border-2 dark:opacity-60"} style={{borderColor: "#" + bgColor}} src={article.coverImageUrl}/>}
-            {!article.coverImageUrl && <img className={"h-50 w-full object-cover border-2"} style={{borderColor: "#" + bgColor}} src={DefaultCover}/>}
+            {article.coverImageUrl && <img className={"h-50 w-full object-cover dark:opacity-60"} src={article.coverImageUrl}/>}
             <p className={"text-xl font-bold"}>{article.title}</p>
-            <p className={"opacity-50 font-sans"} style={{color: "#" + bgColor}}>{article.id}</p>
+            <div className={"flex flex-row gap-1"}>
+                {warning && (
+                    <div className={"rounded px-2 font-bold border-2 border-amber-700 text-amber-700 dark:border-amber-900 dark:bg-amber-900 dark:text-gray-300 w-fit"}>▲ {warning}</div>
+                )}
+                {article.isBaked && (
+                    <div className={"rounded px-2 font-bold border-2 opacity-50"}>Baked</div>
+                )}
+            </div>
         </div>
     )
 }
