@@ -1,7 +1,7 @@
 ﻿const PROD_URL = "https://services.cacahuete.dev/api/beacon";
 const TEST_URL = "http://localhost:5264";
 
-const BASE_URL = TEST_URL;
+const BASE_URL = PROD_URL;
 
 async function request(path, options = {}) {
     const response = await fetch(`${BASE_URL}${path}`, {
