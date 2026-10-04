@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState} from 'react'
 import BeaconIcon from './assets/beacon-icon.svg'
+import BeaconIconDark from './assets/beacon-icon-dark.svg'
 import './App.css'
 import {apiGetFeed, apiGetInfos} from "./api/api.js";
 import {Article} from "./components/Article.jsx";
@@ -13,6 +14,8 @@ function App() {
 
     const observerRef = useRef(null);
     const sentinelRef = useRef(null);
+
+    let isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     async function loadMoreArticles() {
         const newFeedArticles = await apiGetFeed(page+1);
@@ -60,7 +63,8 @@ function App() {
     return (
         <div className={"px-4 py-2 pb-20 pt-4 dark:bg-black dark:text-gray-300"}>
             <div className={"flex flex-row justify-between items-center"}>
-                <img src={BeaconIcon} alt={"Beacon Logo"} className={"h-20"}/>
+                {isDarkMode && <img src={BeaconIconDark} alt={"Beacon Logo"} className={"h-20"}/>}
+                {!isDarkMode && <img src={BeaconIcon} alt={"Beacon Logo"} className={"h-20"}/>}
                 {infos && (
                     <div className={"flex flex-col mr-7 items-end"}>
                         <p className={"opacity-50 tinos-regular"}>Dernière récup à {new Date(infos.lastGatherTime).getHours().toString()}h{new Date(infos.lastGatherTime).getMinutes().toString().padStart(2, '0')}</p>
