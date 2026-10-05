@@ -2,7 +2,7 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 
-export function Article({article}) {
+export function Article({article, openArticleCallback}) {
     const [warning, setWarning] = useState(undefined)
     const [political, setPolitical] = useState(undefined)
     let navigate = useNavigate();
@@ -73,7 +73,7 @@ export function Article({article}) {
 
     return (
         <div style={{borderColor: "#" + bgColor, boxShadow: '0 25px 50px -12px #' + bgColor + "44"}} className={"dm-serif-text-regular relative dark:text-gray-300 border-2 p-4 rounded-lg flex flex-col gap-1"}
-             onClick={() => article.isBaked ? window.open('/article/' + article.id) : window.open(article.url)}>
+             onClick={() => article.isBaked ? openArticleCallback(article.id) : window.open(article.url)}>
             <div className="absolute -translate-y-6 flex flex-row gap-2 tinos-regular">
                 <div style={{borderColor: "#" + bgColor}} className={"rounded px-2 font-bold border-2 bg-white dark:bg-black flex flex-row gap-1 items-center"} style={{color: "#" + bgColor}}>
                     <img src={article.outlet.faviconUrl} className={"w-5 h-5"}/>

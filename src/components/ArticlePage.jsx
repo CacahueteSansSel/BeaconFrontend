@@ -1,14 +1,12 @@
 ﻿import {Link, useNavigate, useParams} from "react-router";
 import {useEffect, useState} from "react";
-import {apiGetBakedArticle, apiGetInfos} from "./api/api.js";
-import BeaconIcon from './assets/beacon-icon.svg'
-import DefaultCover from "./assets/default-cover.png";
+import {apiGetBakedArticle, apiGetInfos} from "../api/api.js";
+import BeaconIcon from '../assets/beacon-icon.svg'
+import DefaultCover from "../assets/default-cover.png";
 
-export function ArticlePage() {
+export function ArticlePage({articleId, hideCallback}) {
     const [article, setArticle] = useState(undefined)
     const [infos, setInfos] = useState(undefined);
-    let { articleId } = useParams();
-    let navigate = useNavigate();
 
     useEffect(() => {
         async function fetchArticle() {
@@ -47,7 +45,7 @@ export function ArticlePage() {
                 )}
             </div>
 
-            <div className={"my-2 w-full border-2 border-gray-700 rounded-lg py-2 text-center text-lg"} onClick={() => navigate(-1)}>Retour au feed Beacon</div>
+            <div className={"my-2 w-full border-2 border-gray-700 rounded-lg py-2 text-center text-lg"} onClick={() => hideCallback()}>Retour au feed Beacon</div>
             <div className={"my-2 w-full border-2 border-gray-700 rounded-lg py-2 text-center text-lg"} onClick={() => window.open(article.article.url)}>Aller sur le site réel</div>
 
             {article.article.coverImageUrl && <img className={"h-50 rounded w-full object-cover border-2 dark:opacity-60"} style={{borderColor: "#" + bgColor}} src={article.article.coverImageUrl}/>}
@@ -68,9 +66,7 @@ export function ArticlePage() {
             <p className={"mt-10 mb-2 text-lg opacity-80 text-center"}>Fin de l'article</p>
             <div className={"w-full border-2 border-gray-700 rounded-lg py-2 text-center text-lg"}
                 onClick={() => window.scroll({top: 0, behavior: 'smooth'})}>Retour en haut</div>
-            <Link to={'/'}>
-                <div className={"mt-2 w-full border-2 border-gray-700 rounded-lg py-2 text-center text-lg"}>Retour au feed Beacon</div>
-            </Link>
+            <div onClick={() => hideCallback()} className={"mt-2 w-full border-2 border-gray-700 rounded-lg py-2 text-center text-lg"}>Retour au feed Beacon</div>
         </div>
     )
 }
